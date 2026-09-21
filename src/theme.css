@@ -1,0 +1,46 @@
+:root {
+  --ink: #3f4650;
+  --line: #dfe2e6;
+  --paper: #ffffff;
+  --cream: #e8eaec;
+  --navy: #59616b;
+  background: #eef0f2;
+  color: var(--ink);
+}
+
+.app-shell {
+  background: #eef0f2;
+}
+
+.metric-card.featured {
+  background: #e1e4e8;
+  color: var(--navy);
+  border-color: #e1e4e8;
+}
+
+.featured .metric-label,
+.featured > strong {
+  color: var(--navy);
+}
+
+.metric-card,
+.panel {
+  border-color: var(--line);
+}
+
+.budget-card {
+  background: #e8eaec;
+  border-color: #e8eaec;
+}
+
+.bar-chart span {
+  background: #d9dde2;
+}
+
+.bar-chart span:nth-child(6) {
+  background: #9aa3ad;
+}
+
+.wave-chart span {
+  border-color: #aeb5bd;
+}
