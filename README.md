@@ -34,7 +34,9 @@ Available API routes:
 docker compose up --build
 ```
 
-Open `http://localhost:8080`. Docker runs the React frontend, Flask API, and PostgreSQL database together. The database data is stored in the `postgres_data` volume.
+Open `http://localhost:8080`. Docker runs the React frontend, Flask API, and PostgreSQL database together on an internal Docker network.
+
+The backend initializes the `expenses` table and seeds four example records when the table is empty. Database data is stored in the `postgres_data` volume.
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

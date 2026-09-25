@@ -41,12 +41,13 @@ function App() {
     event.preventDefault()
     const payload = { ...form, amount: Number(form.amount) }
     if (!payload.title.trim() || payload.amount <= 0) return
+    const previousExpenses = expenses
     const localExpense = { ...payload, id: editingId || Date.now() }
     setExpenses((current) => editingId ? current.map((expense) => expense.id === editingId ? localExpense : expense) : [localExpense, ...current])
     setIsFormOpen(false)
-    try { const response = await fetch(editingId ? `${apiUrl}/expenses/${editingId}` : `${apiUrl}/expenses`, { method: editingId ? 'PATCH' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); if (response.ok) { const saved = await response.json(); setExpenses((current) => editingId ? current.map((expense) => expense.id === editingId ? saved : expense) : current.map((expense) => expense.id === localExpense.id ? saved : expense)); setIsConnected(true) } } catch { setIsConnected(false) }
+    try { const response = await fetch(editingId ? `${apiUrl}/expenses/${editingId}` : `${apiUrl}/expenses`, { method: editingId ? 'PATCH' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); if (!response.ok) throw new Error('Unable to save expense'); const saved = await response.json(); setExpenses((current) => editingId ? current.map((expense) => expense.id === editingId ? saved : expense) : current.map((expense) => expense.id === localExpense.id ? saved : expense)); setIsConnected(true) } catch { setExpenses(previousExpenses); setIsConnected(false) }
   }
-  async function deleteExpense(id: number) { setExpenses((current) => current.filter((expense) => expense.id !== id)); try { await fetch(`${apiUrl}/expenses/${id}`, { method: 'DELETE' }) } catch { setIsConnected(false) } }
+  async function deleteExpense(id: number) { const previousExpenses = expenses; setExpenses((current) => current.filter((expense) => expense.id !== id)); try { const response = await fetch(`${apiUrl}/expenses/${id}`, { method: 'DELETE' }); if (!response.ok) throw new Error('Unable to delete expense'); setIsConnected(true) } catch { setExpenses(previousExpenses); setIsConnected(false) } }
 
   return (
     <div className="app-shell">
